@@ -1,0 +1,21 @@
+docker-machine env Char
+
+03
+# eval $(docker-machine env Char)
+# try with docker ps
+# you can unset the prior command with eval "$(docker-machine env -u)"
+https://docs.docker.com/machine/reference/env/
+
+08
+docker run 
+    --interactive : keep STDIN open even if not attached
+    --tty : allocate pseudo TTY
+
+docker images : list all images
+docker ps : list all containers
+
+docker exec --detach : run command in the background
+
+18
+docker exec -it overlord /bin/sh -c "kill 1"
+docker inspect -f '{{.RestartCount}}' overlord
