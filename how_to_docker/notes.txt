@@ -19,3 +19,10 @@ docker exec --detach : run command in the background
 18
 docker exec -it overlord /bin/sh -c "kill 1"
 docker inspect -f '{{.RestartCount}}' overlord
+
+24 - 25
+Use the command "docker service inspect orbital" to see saved password and ID.
+docker service inspect orbital -f {{.Spec.TaskTemplate.ContainerSpec}}
+
+docker container ls -a -q
+docker image ls -a -q
