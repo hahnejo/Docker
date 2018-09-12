@@ -1,0 +1,9 @@
+<ex00>
+docker build -t hjo/42-docker-1-ex## .
+now the name is hjo/42-docker-1-ex## (# depends on exercise)
+docker run -it --rm hjo/42-docker-1-ex##
+
+<ex01>
+first remove pre-existing container by : docker container rm ex01
+after building run run.sh
+use the docker-machine's ip directly to the server name in Teamspeak
