@@ -1,16 +1,6 @@
-FROM ubuntu
-
-EXPOSE 8888 8888
+FROM ubuntu:14.04
 
 RUN rm -rf /var/lib/apt/lists/*
-
-ARG THEANO_VERSION=rel-0.8.2
-ARG TENSORFLOW_VERSION=0.12.1
-ARG TENSORFLOW_ARCH=cpu
-ARG KERAS_VERSION=1.2.0
-ARG LASAGNE_VERSION=v0.1
-ARG TORCH_VERSION=latest
-ARG CAFFE_VERSION=master
 
 RUN apt-get -y update && \
 	apt-get -y install \
@@ -18,6 +8,8 @@ RUN apt-get -y update && \
 		git \
 		vim \
 		wget \
+		python \
+		python3 \
 		python-virtualenv \
 		python-pip \
 		python-dev \
@@ -31,49 +23,29 @@ RUN apt-get clean && \
 RUN pip install --upgrade pip
 
 RUN apt-get update && \
-	apt-get -qq -y install curl && \
-	curl https://bootstrap.pypa.io/3.3/get-pip.py && \
-	python get-pip.py && \
-	rm get-pip.py
+	apt-get -qq -y install curl
+
+# this is to prevent asking for timezone. Otherwise, we get stuck.
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN export DEBIAN_FRONTEND=noninteractive && \
+	apt-get install -y tzdata && \
+	ln -fs /usr/share/zoneinfo/America/Fremont /etc/localtime && \
+	dpkg-reconfigure --frontend noninteractive tzdata \
+		debconf
 
 RUN apt-get update && apt-get install -y \
 		python-numpy \
-		python-scipy \
-		python-nose \
-		python-h5py \
-		python-pandas \
-		python-sklearn \
-		python-sympy \
-	apt-get clean && \
+		python-pandas
+
+RUN apt-get clean && \
 	apt-get autoremove && \
 	rm -rf /var/lib/apt/lists/*
 
-RUN pip --no-cache-dir install --upgrade ipython && \
-	pip --no-cache-dir install \
-		Cython \
-		ipykernel \
-		jupyther \
-		path.py \
-		Pillow \
-		pygments \
-		six \
-		sphinx \
-		wheel \
-		zmq \
-		&& \
-	python -m ipykernel.kernelspec
+# miniconda installation
+# RUN wget https://hub.docker.com/r/conda/
 
-# RUN pip --no-cache-dir install \
-
-RUN mkdir /tensorflow
-
-WORKDIR /tensorflow
-
-RUN virtualenv --system-site-packages venv && \
-	virtualenv --system-site-packages -p python3 venv && \
-	source /tensorflow/venv/bin/activate \
-		/tensorflow/venev/bin/activate.csh && \
-	. /tensorflow/venv/bin/activate.fish && \
-	(venv)$ pip install --upgrade pip && \
-	pip install --upgrade tensorflow && \
-	(venv)$ python -c "import tensorflow as tf; print(tf.__version__)"
+# now go into ubuntu and interactively execute following commands
+	# bash .sh
+	# conda install -c anaconda jupyter
