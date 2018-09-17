@@ -11,7 +11,7 @@ RUN apt-get -y update && \
         vim \
         git
 
-RUN echo "import hashlib as hasher\nimport datetime as date\n" > crypto.py
+RUN echo "import hashlib as hasher\nimport datetime as date" > crypto.py
 
 RUN apt-get clean && \
 	apt-get autoremove && \
