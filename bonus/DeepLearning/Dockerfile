@@ -20,7 +20,9 @@ RUN apt-get clean && \
 	apt-get autoremove && \
 	rm -rf /var/lib/apt/lists/* 
 
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip && \
+	pip3 install -vU setuptools && \
+	pip3 install jupyter
 
 RUN apt-get update && \
 	apt-get -qq -y install curl
@@ -44,8 +46,4 @@ RUN apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
 # miniconda installation
-# RUN wget https://hub.docker.com/r/conda/
-
-# now go into ubuntu and interactively execute following commands
-	# bash .sh
-	# conda install -c anaconda jupyter
+RUN wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
